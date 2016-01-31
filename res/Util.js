@@ -1,7 +1,7 @@
 var http = require("http");
 var fs = require('fs');
 var path = require('path');
-
+var URL = require('url');
 module.exports = {
 addEvent : function(e, ts){
     events = read('1452955861853event')  || [] ;
@@ -12,6 +12,7 @@ addEvent : function(e, ts){
         write('1452955861853event', events);
     },
     getParam : function(name, req){
+        try{
         var str = req.url;
         var res;
         str.split("?")[1].split("&").forEach(function(st){
@@ -20,12 +21,15 @@ addEvent : function(e, ts){
             }
         });
         return decodeURIComponent(res);
+        } catch (e){
+            return false;
+        }
     },
     serveFile: function (request,response){
     var filePath = '.' + request.url;
     if (filePath == './')
         filePath = './index.html';
-
+    console.log("fp ",filePath);
     var extname = path.extname(filePath);
     var contentType = 'text/html';
     switch (extname) {
