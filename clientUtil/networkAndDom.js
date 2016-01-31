@@ -46,7 +46,7 @@ function _updateCardDom(carddata, myCards){
         div.className = 'ui card card-container';
         $(div).css('text-align', 'center');
         var elem = document.createElement("div");
-        elem.innerHTML = "<div class='card'></div><span class='cardno' style='color:green'></span></div>";
+        elem.innerHTML = "<div class='card'></div><span class='cardno'></span></div>";
         var img = getCardImage(num);
 		div.style.width=img.style.width;		/*Prevent Overflow of border*/
 		div.style.height=img.style.height;		/*Prevent Overflow of border*/
@@ -60,10 +60,10 @@ function _updateCardDom(carddata, myCards){
 }
 
 function updatePlayers(pData, curr, prev){
-    var template = "<td><span class='name'></span></td><td><span class='noc'> cards </span></td><td><div class='ui inverted red kick button'>kick</div></td>";
+    var template = "<span class='name'></span><span class='noc'> cards </span>&nbsp;&nbsp;&nbsp;<input type='button' class = 'kick' value='kick'/>";
     $('#players').empty();
     for(var name in pData){
-        var pe = document.createElement("tr");
+        var pe = document.createElement("td");
         pe.className = 'playerContainer';
         $(pe).append(template);
         $('.name', pe).text(name+" ");
@@ -82,7 +82,7 @@ function updatePlayers(pData, curr, prev){
         $('#players').append(pe);
     }
     $('.kick').on('click', function(e){
-        var player = $(e.target).parent().parent().attr('kick');
+        var player = $(e.target.parentElement).attr('kick');
         player = player && player.trim();
         if(!player) return;
         if(!window.confirm('are you sure you want to kick the player ' + player)) return;

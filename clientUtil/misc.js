@@ -1,8 +1,8 @@
-function login(){
-    var user = prompt('enter new user name');
-    if(!user) return;
-    setCookie('user', user);
-    $('#user').val('username is '+user+'. click to change');
+function logout(){
+    if(!window.confirm('sure you want to log out ?')) return;
+    deleteCookie('user');
+    window.FB.logout();
+    location.reload();
 }
 function sendChat(){
     var ct = $('#chat-content').val();
@@ -35,10 +35,10 @@ function getUser(){
     var name =  getCookie('user');
 	
     //TODO : set some count for this
-    while(!name){
-        checkLoginState();
-        name =  getCookie('user');
-    };
+    if(!name){
+    checkLoginState();
+    throw new Error('name not found');
+    }
     return name;
 }
 function getCookie(cname) {
@@ -65,6 +65,10 @@ function setCookie(cname, cvalue){
     } else {
         document.cookie = cname + "=" + cvalue;
     }
+    }
+
+    function deleteCookie(cname){
+        document.cookie = cname+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     }
 
 function polyfills(){
@@ -99,6 +103,16 @@ function showUpdate( msg, msg_type){
 		type:msg_type,
 		 showCloseButton: true
 		 });
-		 
-		 
 }
+
+/*Make the Control fixed to the bottom on scroll
+var elementPosition = $('#turn-container').offset();
+
+$(window).scroll(function(){
+        if($(window).scrollTop() > elementPosition.top){
+              $('#turn-container').css('position','fixed').css('bottom','1%');
+        } else {
+            $('#turn-container').css('position','static');
+        }    
+});
+*/
